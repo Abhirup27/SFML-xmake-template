@@ -7,7 +7,7 @@ set_policy("check.auto_ignore_flags", false)
 
 -- Detect compiler
 local is_msvc = is_plat("windows") 
-local is_gcc = is_plat("gcc") 
+local is_gcc = is_plat("linux") 
 local is_mingw = is_plat("mingw")
 
 -- SFML requirements
@@ -112,6 +112,9 @@ target("game")
         if is_msvc then
             add_cxxflags("/O2", "/GL", "/Gy")
             add_ldflags("/LTCG")
+        elseif is_gcc then
+            add_cxxflags("-O3","-flto", "-march=native", "-ffast-math")
+            add_cxxflags("-fno-exceptions", "-fno-rtti")
         else
             add_cxxflags("-O3", "-march=native", "-ffast-math")
             add_cxxflags("-fno-exceptions", "-fno-rtti")
